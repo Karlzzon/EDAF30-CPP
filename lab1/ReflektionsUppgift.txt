@@ -1,0 +1,21 @@
+1. A declaration is like a promise to the compiler that a variable, a function or class exists and that it will defined somewhere else. int add(int a, int b); 
+   A definition is the actual implementation, where the declared function, class or variable is implemented and allocated memory. int add(int a , int b ){ return a+b;}
+
+2. By saying IF NOT DEFINED in the top of a header, this condition will only be accepted the first time the pre processor tries to handle the file.
+
+3. Linker errors usually occurs when the compiler cant find the correct definitions for things used in the source code. Compiler errors are usually syntaxfel or spelling errors. 
+   To solve linker errors one usually has to check that every variable and function is defined correctly, that every header and library is included correctly and that every file needed   is included in the buildprocess.
+
+4. You would need to add ur Hello world program to the list of targets and add a condition saying that it should be remade if its older than helloWorld.o
+
+5. unsigned char is a primitive typ that only stores positive integers. If you change the type to char or signed char, it will be able to handle negative integers aswell, which might give issues when converting between the number and alphabeticals.
+
+6. using the >> will result in whitespace characters getting lost since the >> operator treats white space as a separator between values.
+
+7.  1. Compile with debug info "g++ -g -o my_program my_program.cc"
+	2. Run in debugger "lldb ./my_program"
+	3. recreate the crash. Give necessary input or just do "run"
+	4. When the program crashes LLDB automatically stops and gives a command prompt.
+	5. To obtain stack trace, us "bt" (backtrace) and LLDDB will display the call stack.
+
+8. A breakpoint is a point in the code where we instruct the debugger to pause execution and a watchpoint is used to monitor a variable or a memory location during execution.
