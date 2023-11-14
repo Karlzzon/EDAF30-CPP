@@ -22,13 +22,14 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = word_processor
+PROGS = word_processor spell
 
 all: $(PROGS)
 
 
 # Targets rely on implicit rules for compiling and linking
 word_processor: word_processor.o
+spell: spell.o dictionary.o
 # Phony targets
 .PHONY: all test clean distclean
 
