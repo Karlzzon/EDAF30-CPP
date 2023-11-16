@@ -18,20 +18,22 @@ int main()
 	{	
 		if(word.find('\'') == string::npos){
 			transform(word.begin(), word.end(), word.begin(), ::tolower);
-			output<<word + " ";
+			output<<word << " ";
 			trigrams.clear();
 
 			for(string::size_type i=0; i+2<word.size();++i){
 				trigrams.push_back(word.substr(i,3));
 			}			
+			sort(trigrams.begin(),trigrams.end());
+			trigrams.erase(unique(trigrams.begin(), trigrams.end()), trigrams.end());
+			
 			auto x = trigrams.size();
 			output << x << " ";
-			sort(trigrams.begin(),trigrams.end());
 
 			for ( auto x : trigrams){
 				output << x <<" ";	
 			}
-			output<< endl;
+			output<< "\n";
 		}	
 	}
 	
