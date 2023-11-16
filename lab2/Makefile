@@ -29,7 +29,7 @@ all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 word_processor: word_processor.o
-spell: spell.o dictionary.o
+spell: spell.o dictionary.o word.o
 # Phony targets
 .PHONY: all test clean distclean
 
@@ -37,7 +37,7 @@ spell: spell.o dictionary.o
 clean:
 	rm -f *.o $(PROGS)
 	rm words.txt
-
+	
 distclean: clean
 	rm *.d
 

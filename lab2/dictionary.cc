@@ -5,29 +5,49 @@
 #include <algorithm>
 #include "word.h"
 #include "dictionary.h"
+#include <sstream>
 
-using std::string;
-using std::vector;
+using namespace std;
 
 Dictionary::Dictionary() {
 	string tmp;
-	std::ifstream in("./words.txt");
+	ifstream in("./words.txt");
 	
 	if(!in.is_open()){
-		throw std::runtime_error("Unable to open file ./words.txt");
+		throw runtime_error("Unable to open file ./words.txt");
 	}
 
+	string name;
+	vector<string> trigrams;
 	while(getline(in,tmp)){
-		words.insert(tmp.substr(0, tmp.find_first_of(" ")));
+		name = tmp.substr(0,tmp.find_first_of(" ")); 
+		
+		istringstream iss(tmp.substr(tmp.find_first_of("0123456789")+1));
+		string trigram;
+		while(iss >> trigram){
+			trigrams.push_back(trigram);
+		}
+		Word w(name, trigrams);	
+		words[w.get_word().size()].push_back(w);
+		trigrams.clear();
 	}
 	in.close();
 }
 
 bool Dictionary::contains(const string& word) const {
-	return words.find(word) != words.end();
+	for(auto w : words[word.size()]){
+		if (w.get_word() == word){
+			return true;
+		}
+	}
+	return false;
 }
 
 vector<string> Dictionary::get_suggestions(const string& word) const {
 	vector<string> suggestions;
 	return suggestions;
+}
+
+void Dictionary::add_trigram_suggestions(const vector<string>& s, const string& w){
+		 
 }
