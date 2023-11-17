@@ -49,5 +49,24 @@ vector<string> Dictionary::get_suggestions(const string& word) const {
 }
 
 void Dictionary::add_trigram_suggestions(const vector<string>& s, const string& w){
-		 
+		
+	vector<Word> adjacent;
+	if(w.size()>1){
+		adjacent.insert(adjacent.end(), words[w.size()-1].begin(), words[w.size()-1].end());
+		adjacent.insert(adjacent.end(), words[w.size()+1].begin(), words[w.size()+1].end());
+	}
+
+	vector<string> trigrams;
+	transform(w.begin(), w.end(),w.begin(),::tolower);
+
+	for(size_t i = 0; i+2<w.size();++i){			
+		trigrams.push_back(w.substr(i,3));
+	}
+	auto new_end =remove_if(adjacent.begin(),adjacent.end(), [&](const Word& w){
+		return w.get_matches(trigrams) < trigrams.size()/2;
+	});	
+	
+		for(const auto& w: adjacent){
+		s.emplace_back(w.get_word());		
+	}
 }
