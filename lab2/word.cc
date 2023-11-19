@@ -5,6 +5,7 @@
 
 using std::vector;
 using std::string;
+using std::unordered_set;
 
 Word::Word(const string& w, const vector<string>& t) : word{w}, trigrams{t} {}
 
@@ -13,13 +14,14 @@ string Word::get_word() const {
 }
 
 unsigned int Word::get_matches(const vector<string>& t) const {
-	vector<string> matches;
+	int c = 0;
 
-	//förutsättar att bägge vektorerna är sorterade. 
-	std::set_intersection(
-		trigrams.begin(), trigrams.end(),
-		t.begin(), t.end(),
-		std::back_inserter(matches)
-	);
-	return matches.size();
+	for(const auto &s : t )
+	{
+		if(find(trigrams.begin(), trigrams.end(), s) != trigrams.end())
+		{
+			c++;
+		}
+	}
+	return c;
 }

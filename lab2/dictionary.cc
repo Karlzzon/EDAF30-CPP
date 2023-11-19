@@ -45,28 +45,23 @@ bool Dictionary::contains(const string& word) const {
 
 vector<string> Dictionary::get_suggestions(const string& word) const {
 	vector<string> suggestions;
+	add_trigram_suggestions(suggestions, word);
 	return suggestions;
 }
 
-void Dictionary::add_trigram_suggestions(const vector<string>& s, const string& w){
-		
-	vector<Word> adjacent;
-	if(w.size()>1){
-		adjacent.insert(adjacent.end(), words[w.size()-1].begin(), words[w.size()-1].end());
-		adjacent.insert(adjacent.end(), words[w.size()+1].begin(), words[w.size()+1].end());
-	}
-
+void Dictionary::add_trigram_suggestions(vector<string>& s, const string& w) const{	
 	vector<string> trigrams;
-	transform(w.begin(), w.end(),w.begin(),::tolower);
-
-	for(size_t i = 0; i+2<w.size();++i){			
+	for(size_t i = 0; i + 2 < w.size(); ++i){			
 		trigrams.push_back(w.substr(i,3));
 	}
-	auto new_end =remove_if(adjacent.begin(),adjacent.end(), [&](const Word& w){
-		return w.get_matches(trigrams) < trigrams.size()/2;
-	});	
-	
-		for(const auto& w: adjacent){
-		s.emplace_back(w.get_word());		
+	sort(trigrams.begin(),trigrams.end());
+	for(size_t i = w.size() - 1; i <= w.size() + 1; ++i){
+		if(i < maxlen){
+			for(const Word& word : words[i]){
+				if(word.get_matches(trigrams) >= (trigrams.size()/2)){
+					s.emplace_back(word.get_word());
+				}
+			}
+		}
 	}
 }

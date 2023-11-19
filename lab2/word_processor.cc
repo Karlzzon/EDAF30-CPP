@@ -16,7 +16,6 @@ int main()
 	string word;
 	while(getline(input,word))
 	{	
-		if(word.find('\'') == string::npos){
 			transform(word.begin(), word.end(), word.begin(), ::tolower);
 			output<<word << " ";
 			trigrams.clear();
@@ -33,10 +32,8 @@ int main()
 			for ( auto x : trigrams){
 				output << x <<" ";	
 			}
-			output<< "\n";
-		}	
+			output<< "\n";	
 	}
-	
 	output.close();
 
 }
