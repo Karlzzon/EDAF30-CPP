@@ -15,7 +15,7 @@ private:
 	static constexpr int maxlen{25};
 	std::vector<Word> words[maxlen];
 	void add_trigram_suggestions(std::vector<std::string>& s, const std::string& w) const;
-	
+	void rank_suggestions(std::vector<std::string>& s, const std::string& w) const;	
+	void trim_suggestions(std::vector<std::string>& s) const;
 };
-
 #endif

@@ -6,6 +6,7 @@
 #include "word.h"
 #include "dictionary.h"
 #include <sstream>
+#include "edit_distance.h"
 
 using namespace std;
 
@@ -34,7 +35,8 @@ Dictionary::Dictionary() {
 	in.close();
 }
 
-bool Dictionary::contains(const string& word) const {
+bool Dictionary::contains(const string& word) const
+{
 	for(auto w : words[word.size()]){
 		if (w.get_word() == word){
 			return true;
@@ -43,13 +45,17 @@ bool Dictionary::contains(const string& word) const {
 	return false;
 }
 
-vector<string> Dictionary::get_suggestions(const string& word) const {
+vector<string> Dictionary::get_suggestions(const string& word) const
+{
 	vector<string> suggestions;
 	add_trigram_suggestions(suggestions, word);
+	rank_suggestions(suggestions, word);
+	trim_suggestions(suggestions);
 	return suggestions;
 }
 
-void Dictionary::add_trigram_suggestions(vector<string>& s, const string& w) const{	
+void Dictionary::add_trigram_suggestions(vector<string>& s, const string& w) const
+{	
 	vector<string> trigrams;
 	for(size_t i = 0; i + 2 < w.size(); ++i){			
 		trigrams.push_back(w.substr(i,3));
@@ -63,5 +69,21 @@ void Dictionary::add_trigram_suggestions(vector<string>& s, const string& w) con
 				}
 			}
 		}
+	}
+}
+
+void Dictionary::rank_suggestions(vector<string>& s, const string& w) const
+{
+	auto myComparator  = [&w](const string& a, const string& b){
+			return edit_distance(a,w) < edit_distance(b,w);
+	};
+	sort(s.begin(), s.end(), myComparator);
+}
+
+void Dictionary::trim_suggestions(vector<string>& s) const
+{
+	if(s.size()>5)
+	{
+		s.resize(5);
 	}
 }

@@ -22,14 +22,15 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = word_processor spell
+PROGS = word_processor spell test_edit_distance
 
 all: $(PROGS)
 
 
 # Targets rely on implicit rules for compiling and linking
 word_processor: word_processor.o
-spell: spell.o dictionary.o word.o
+spell: spell.o dictionary.o word.o edit_distance.o
+test_edit_distance: test_edit_distance.o edit_distance.o
 # Phony targets
 .PHONY: all test clean distclean
 
