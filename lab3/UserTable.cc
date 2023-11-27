@@ -1,6 +1,7 @@
 #include "UserTable.h"
 #include <fstream>
 #include <algorithm>
+#include <iostream>
 
 const User UserTable::user_not_found = User{-1,"Not Found"};
 
@@ -35,7 +36,7 @@ void UserTable::addUser(const User& u)
     while ( (pos < n) && (users[pos].getCardNbr() < u.getCardNbr())){
         ++pos;
     }
-
+	// std::cout << "pos is " <<pos << "\n"; 
     //2. skapa lucka i vektorn
     for(int i=n; i > pos; --i){
         users[i] = users[i-1];
@@ -43,6 +44,7 @@ void UserTable::addUser(const User& u)
 
     //3. stoppa in den nya användaren i luckan
     users[pos] = u;
+	++n; // bug 3 
 }
 
 User UserTable::find(int c) const
@@ -53,11 +55,11 @@ User UserTable::find(int c) const
     int high = n - 1;
     int mid = -1;
     bool found = false;
-    while (low < high && ! found) {
+    while (low <= high && ! found) { // bug 4 : changed "<" to "<="
         mid = (low + high) / 2;
-        //
+        
         int midnbr = users[mid].getCardNbr();
-        if (midnbr = c) {
+        if (midnbr == c) { // bug 1 : changed "=" to "==" 
             found = true;
         } else if (users[mid].getCardNbr() < c) {
             low = mid + 1;
@@ -68,14 +70,13 @@ User UserTable::find(int c) const
 
     return found ? users[mid] : user_not_found;
 }
+
 User UserTable::find(std::string name) const
 {
     for (int i = 0; i != n; ++i) {
         if (users[i].getName() == name) {
             return users[i];
-        } else {
-            return user_not_found;
-        }
+        } 
     }
     return user_not_found;
 }
@@ -95,6 +96,7 @@ void UserTable::ensureCapacity(int s)
 }
 void UserTable::print(std::ostream& os) const
 {
+	//std::cout << "getNbrUsers returned " <<getNbrUsers()<< "\n";
     os << "-------------" << std::endl;
     for(int i = 0; i != getNbrUsers(); ++i) {
         const auto& u = users[i];
@@ -108,7 +110,7 @@ void UserTable::print(std::ostream& os) const
     * Om något kortnummer inte kunde sökas upp returneras detta. Annars, om
     * alla sökningar lyckades, returneras 0.
     */
-int testFindNbr(const UserTable ut)
+int testFindNbr(const UserTable& ut)
 {
     for (int i = 0; i < ut.n; i++) {
         int nbr = ut.users[i].getCardNbr();
