@@ -16,8 +16,9 @@ UserTable::UserTable(const std::string& fname) :UserTable{}
             int cn;
             if(ufile >> cn ) {
                 ufile.ignore(); // skip space
-                char n[80];
-                ufile.getline(n,80);
+				std::string n;
+				std::getline(ufile,n);
+				n.pop_back();  // \0 eller \n
                 addUser(User(cn,n));
 
             }
