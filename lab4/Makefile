@@ -20,13 +20,17 @@ LDFLAGS = -g
 # LDFLAGS += -stdlib=libc++
 
 # Targets
-PROGS = TestTagRemover
+PROGS = TestTagRemover primes date_test testToStringTemplate test_string_castTemplate
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 # Use $(CXX) for linking
 TestTagRemover: TestTagRemover.o TagRemover.o
+primes: primes.o
+date_test: date_test.o date.o
+testToStringTemplate: testToStringTemplate.o
+test_string_castTemplate: test_string_castTemplate.o
 # Phony targets
 .PHONY: all test clean distclean
 
