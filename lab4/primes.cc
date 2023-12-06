@@ -13,6 +13,9 @@ int main()
 	
 	while((current = primes.find('P', current +1 )) != string::npos){
 		toMark = current;
+		if(current<=200){
+			cout<<current<<endl;
+		}
 		while(toMark < primes.size())
 		{	
 			toMark +=current;
@@ -22,7 +25,7 @@ int main()
 		}
 
 	}
-	cout<< primes.substr(0,200)<< endl;
+//	cout<< primes.substr(0,200)<< endl;
 	cout<< primes.rfind('P')<<endl;
 }
 
